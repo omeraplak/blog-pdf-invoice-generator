@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # articles
-strapi-pdf-invoice-generator
+# strapi-pdf-invoice-generator
