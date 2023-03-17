@@ -63,12 +63,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "companies": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::company.company",
-      "mappedBy": "users_permissions_user"
-    },
     "contacts": {
       "type": "relation",
       "relation": "oneToMany",
@@ -79,6 +73,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::client.client",
+      "mappedBy": "users_permissions_user"
+    },
+    "companies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::company.company",
       "mappedBy": "users_permissions_user"
     }
   }
