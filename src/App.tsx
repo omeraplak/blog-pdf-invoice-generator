@@ -8,6 +8,13 @@ import {
   notificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
+import * as Icons from "@ant-design/icons";
+
+const {
+  UserAddOutlined,
+  TeamOutlined,
+  InfoCircleOutlined,
+} = Icons;
 
 import routerBindings, {
   CatchAllNavigate,
@@ -15,23 +22,14 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import { DataProvider } from "@refinedev/strapi-v4";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "pages/categories";
-import {
-  ProductCreate,
-  ProductEdit,
-  ProductList,
-  ProductShow,
-} from "pages/products";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { authProvider, axiosInstance } from "./authProvider";
 import { Header } from "./components/header";
 import { API_URL } from "./constants";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import { CompanyList } from "pages/companies";
+import { ClientList } from "pages/clients";
+import { ContactList, EditContact } from "pages/contacts";
 
 function App() {
   return (
@@ -42,25 +40,21 @@ function App() {
           <Refine
             resources={[
               {
-                name: "products",
-                list: "/products",
-                create: "/products/create",
-                edit: "/products/edit/:id",
-                show: "/products/show/:id",
-                meta: {
-                  canDelete: true,
-                },
+                name: "companies",
+                list: "/companies",
+                icon: <InfoCircleOutlined />,
               },
               {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
-                },
+                name: "clients",
+                list: "/clients",
+                icon: <TeamOutlined />,
               },
+              {
+                name: "contacts",
+                list: "/contacts",
+                edit: "/contacts/:id/edit",
+                icon: <UserAddOutlined />,
+              }
             ]}
             authProvider={authProvider}
             dataProvider={DataProvider(API_URL + `/api`, axiosInstance)}
@@ -83,19 +77,17 @@ function App() {
               >
                 <Route
                   index
-                  element={<NavigateToResource resource="products" />}
+                  element={<NavigateToResource resource="companies" />}
                 />
-                <Route path="/products">
-                  <Route index element={<ProductList />} />
-                  <Route path="create" element={<ProductCreate />} />
-                  <Route path="edit/:id" element={<ProductEdit />} />
-                  <Route path="show/:id" element={<ProductShow />} />
+                <Route path="/companies">
+                  <Route index element={<CompanyList />} />
                 </Route>
-                <Route path="/categories">
-                  <Route index element={<CategoryList />} />
-                  <Route path="create" element={<CategoryCreate />} />
-                  <Route path="edit/:id" element={<CategoryEdit />} />
-                  <Route path="show/:id" element={<CategoryShow />} />
+                <Route path="/clients">
+                  <Route index element={<ClientList />} />
+                </Route>
+                <Route path="/contacts">
+                  <Route index element={<ContactList />} />
+                  <Route path="/contacts/:id/edit" element={<EditContact />} />
                 </Route>
               </Route>
               <Route
