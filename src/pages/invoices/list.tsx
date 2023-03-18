@@ -9,7 +9,7 @@ import * as Icons from "@ant-design/icons";
 import { Table, Space, Button, Modal } from "antd";
 
 import { IInvoice, IMission } from "interfaces";
-// import { PdfLayout } from "components/pdf";
+import { PdfLayout } from "components/pdf";
 
 const { FilePdfOutlined } = Icons;
 
@@ -106,12 +106,25 @@ export const InvoiceList: React.FC = () => {
                                         size="small"
                                         recordItemId={record?.id}
                                     />
+                                    {record.company && (
+                                        <Button
+                                            size="small"
+                                            icon={<FilePdfOutlined />}
+                                            onClick={() => {
+                                                setRecord(record);
+                                                show();
+                                            }}
+                                        />
+                                    )}
                                 </Space>
                             );
                         }}
                     />
                 </Table>
             </List>
+            <Modal visible={visible} onCancel={close} width="80%" footer={null}>
+                <PdfLayout record={record} />
+            </Modal>
         </>
     );
 };
