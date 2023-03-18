@@ -42,6 +42,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "tax": {
+      "type": "integer"
+    },
+    "discount": {
+      "type": "integer"
     }
   }
 }
