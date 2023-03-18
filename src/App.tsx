@@ -14,6 +14,8 @@ const {
   UserAddOutlined,
   TeamOutlined,
   InfoCircleOutlined,
+  SlidersOutlined,
+  FileAddOutlined,
 } = Icons;
 
 import routerBindings, {
@@ -30,6 +32,8 @@ import { ColorModeContextProvider } from "./contexts/color-mode";
 import { CompanyList } from "pages/companies";
 import { ClientList } from "pages/clients";
 import { ContactList, EditContact } from "pages/contacts";
+import { MissionList } from "pages/missions";
+import { CreateInvoice, EditInvoice, InvoiceList } from "pages/invoices";
 
 function App() {
   return (
@@ -54,7 +58,19 @@ function App() {
                 list: "/contacts",
                 edit: "/contacts/:id/edit",
                 icon: <UserAddOutlined />,
-              }
+              },
+              {
+                name: "missions",
+                list: "/missions",
+                icon: <SlidersOutlined />,
+            },
+            {
+                name: "invoices",
+                list: "/invoices",
+                create: "/invoices/create",
+                edit: "invoices/:id/edit",
+                icon: <FileAddOutlined />,
+            },
             ]}
             authProvider={authProvider}
             dataProvider={DataProvider(API_URL + `/api`, axiosInstance)}
@@ -88,6 +104,14 @@ function App() {
                 <Route path="/contacts">
                   <Route index element={<ContactList />} />
                   <Route path="/contacts/:id/edit" element={<EditContact />} />
+                </Route>
+                <Route path="/missions">
+                  <Route index element={<MissionList />} />
+                </Route>
+                <Route path="/invoices">
+                  <Route index element={<InvoiceList />} />
+                  <Route path="/invoices/create" element={<CreateInvoice />} />
+                  <Route path="/invoices/:id/edit" element={<EditInvoice />} />
                 </Route>
               </Route>
               <Route
