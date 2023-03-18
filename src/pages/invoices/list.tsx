@@ -106,25 +106,12 @@ export const InvoiceList: React.FC = () => {
                                         size="small"
                                         recordItemId={record?.id}
                                     />
-                                    {/* {record.company && (
-                                        <Button
-                                            size="small"
-                                            icon={<FilePdfOutlined />}
-                                            onClick={() => {
-                                                setRecord(record);
-                                                show();
-                                            }}
-                                        />
-                                    )} */}
                                 </Space>
                             );
                         }}
                     />
                 </Table>
             </List>
-            {/* <Modal visible={visible} onCancel={close} width="80%" footer={null}>
-                <PdfLayout record={record} />
-            </Modal> */}
         </>
     );
 };
