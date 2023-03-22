@@ -13,7 +13,7 @@ import {
 } from "antd";
 
 import { IContact } from "interfaces";
-import { CreateContact } from "components/contacts";
+import { CreateContact } from "components/contact";
 
 type CreateClientProps = {
     drawerProps: DrawerProps;
