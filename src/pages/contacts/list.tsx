@@ -11,7 +11,7 @@ import {
 import { Table, Space } from "antd";
 
 import { IContact } from "interfaces";
-import { CreateContact } from "components/contacts";
+import { CreateContact } from "components/contact";
 
 export const ContactList: React.FC = () => {
     const { tableProps } = useTable<IContact>({
