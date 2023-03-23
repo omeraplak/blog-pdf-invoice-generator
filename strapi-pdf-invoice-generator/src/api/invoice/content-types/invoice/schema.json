@@ -27,6 +27,12 @@
     "custom_id": {
       "type": "string"
     },
+    "discount": {
+      "type": "integer"
+    },
+    "tax": {
+      "type": "integer"
+    },
     "contact": {
       "type": "relation",
       "relation": "manyToOne",
@@ -40,8 +46,9 @@
     },
     "users_permissions_user": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invoices"
     }
   }
 }
