@@ -80,6 +80,12 @@
       "relation": "oneToMany",
       "target": "api::company.company",
       "mappedBy": "users_permissions_user"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "users_permissions_user"
     }
   }
 }
