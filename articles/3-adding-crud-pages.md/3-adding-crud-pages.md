@@ -527,7 +527,9 @@ Detailed reference of the **Ant Design** `<List />` component (imported as `<Ant
 
 ### Company `create` Action
 
-Take a note of the `<List />` component in the `<CompanyList />` page. And especially the `createButtonProps` prop. `<List />` is an **refine-Ant Design** component which can be customized to have buttons as children. For example, we are placing a `<CreateButton />` inside the `<List />` component. More relevant elaboration about it is available in the [docs section here](https://refine.dev/docs/api-reference/antd/components/basic-views/list/#cancreate-and-createbuttonprops).
+Take a note of the `<List />` component in the `<CompanyList />` page. And especially the `createButtonProps` prop. `<List />` is an **refine-Ant Design** component that by default places a `<CreateButton />` inside a header. This button can be customized to have props for events such as `onClick`.
+
+For example, we are setting the behavior of the button to show the modal by invoking `createShow()` on a click. More elaboration about it is available in the [docs section here](https://refine.dev/docs/api-reference/antd/components/basic-views/list/#cancreate-and-createbuttonprops).
 
 In the `<CompanyList />` page above, by specifying the value of `createButtonProps` prop for `<List />`, we are activating the `<CreateButton />`. And then we are invoking the `createShow` modal function for the `onClick` event on the button.
 

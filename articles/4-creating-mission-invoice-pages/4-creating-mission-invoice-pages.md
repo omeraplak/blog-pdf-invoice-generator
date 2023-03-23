@@ -2,7 +2,7 @@
 
 In this post, we add more CRUD views to the **Pdf Invoice Generator** app we have been building using **refine** last few days. The resources we cover in this episode are: `missions` and `invoices`. We mainly continue leveraging `dataProvider` methods and adding to the `resources` prop as well as associated route definitions.
 
-We are on Day Four of [**refineWeek**]() and this [**refineWeek**]() series is a five-part tutorial that aims to help developers learn the ins-and-outs of **refine**'s powerful capabilities and get going with **refine** within a week.
+We are on Day Four of [**#refineWeek**]() and this [**#refineWeek**]() series is a five-part tutorial that aims to help developers learn the ins-and-outs of **refine**'s powerful capabilities and get going with **refine** within a week.
 
 ## Overview
 
