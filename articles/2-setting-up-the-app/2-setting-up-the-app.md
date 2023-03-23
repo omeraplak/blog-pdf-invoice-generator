@@ -226,9 +226,10 @@ export default App;
 
 Take an early note of the `resources` prop. The resources and their corresponding routes are added as part of the examples that we opted for while initializing the project with the **refine** CLI Wizard. We are going to remove these resources and route definitions and add our own in the coming episodes.
 
-Note also the presentation of the `<AuthPage />` component at the `/login` path. We will come to this in a section related to authentication on [Day Two]().
+Note also the presentation of the `<AuthPage />` component at the `/login` path. We will come to this in a section related to authentication on [Day Three]().
 
-For the most part, the meat of an app is configured and built around the above indicated props and routes. Today, we'll examine a few of these props so that we are ready to move to the next episode.
+For the most part, the meat of an app is configured and built around the above indicated props and routes. Today, we'll examine a few of these props so that we are ready to move to the next episode. But let's begin with the `<Refine />` component first.
+
 <br />
 
 
@@ -236,9 +237,9 @@ For the most part, the meat of an app is configured and built around the above i
 
 The `<Refine />` component is the entry point of a **refine** app. In order to leverage the power of **refine**'s abstraction layers, we need to have the `<Refine />` component.
 
-Then we have to configure the `<Refine />` component with the provider objects we want to use in our app. We can see that CLI Wizard already added the `dataProvider` and `authProvider` props for us inside `<Refine />` out-of-the-box. We will be using them in our app. Some provider objects like the `notificationProvider` or the `dataProvider` are defined for us by **refine**'s core or support modules and some like the `accessControlProvider` have to be defined by ourselves.
+Then we have to configure the `<Refine />` component with the provider objects we want to use in our app. We can see that CLI Wizard already added the `dataProvider` and `authProvider` props for us inside `<Refine />` out-of-the-box. We will be using them in our app. Some provider objects like the `notificationProvider` or the `dataProvider` are defined for us by **refine**'s core or support modules and some like the [`accessControlProvider`]() have to be defined by ourselves.
 
-Besides, some providers such as the `authProvider` _can / have_ to be tailored according to our app's needs and some like the **Strapi**-specific `dataProvider` by `@refinedev/strapi-v4` come completed and cannot be extended or modified, because we don't need to.
+Besides, some providers such as the `authProvider` _can / have_ to be tailored according to our app's needs and some like the **Strapi**-specific `dataProvider` by `@refinedev/strapi-v4` come packaged completely and cannot be extended or modified.
 
 <br />
 
@@ -574,7 +575,7 @@ export const API_URL = "https://api.strapi-v4.refine.dev";
 export const TOKEN_KEY = "strapi-jwt-token";
 ```
 
-We'll come to this in a later section, but let's look at the `authProvider` prop now.
+We'll come to this in on [Day 3](), but let's look at the `authProvider` prop now.
 
 <br />
 
@@ -726,22 +727,7 @@ The admin dashboard at `/admin` after signing up and logging in should look some
 
 ![3-setting-up-the-app-strapi-admin](./3-setting-up-the-client-app-strapi-admin.png)
 
-<br />
-
-### Strapi API Tokens
-
-Having access to the **Strapi** admin dashboard, we are ready to create access tokens for our **refine** **Pdf Invoice Generator** app. Please follow [this section]() of the **Strapi** quickstart guide for more details on creating API Tokens.
-
-After creating the token, we have to place it inside `src/constants.ts` file. So, let's update it:
-
-```TypeScript
-// src/constants.ts
-
-export const API_URL = "http://localhost:1337";
-export const TOKEN_KEY = "625b118353b2924b459527cd39f7ca792a870cc13619562a3e3f8ee6908519c581bcabb8152cbd10913e72d9adf725e6bd99b8793632b34d1dd952544e3bd883eaba7c3ab169308cd29730267247147d20af102d70a311d515d9b5ab06384e0a2418fe47ecda895d74d87bbcf6bbc74d9b318d5795fcf7be1691ed4524d73621";
-```
-
-With this ready, now we can go ahead and create our collections.
+Having access to the **Strapi** admin dashboard, we are ready to go ahead and create our collections.
 
 <br />
 
