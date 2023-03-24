@@ -6,9 +6,9 @@ We are on Day Four of [**#refineWeek**]() and this [**#refineWeek**]() series is
 
 ## Overview
 
-On [Day 3](), we implemented CRUD actions for `companies`, `clients` and `contacts`. We saw that core data hooks such as `useCreate()` are invoked to access corresponding `dataProvider` methods (i.e. `dataProvider.create` method). And more sophisticated hooks like `useSimpleList()` are built on top of low level hooks like `useList()`.
+On [Day 3](), we implemented CRUD actions for `companies`, `clients` and `contacts`. We saw that core data hooks such as `useCreate()` are invoked to access corresponding `dataProvider` methods (for example, `dataProvider.create`). And more sophisticated hooks like `useSimpleList()` are built on top of low level hooks like `useList()`.
 
-We have used some other higher level hooks, like `useModalForm()`, `useDrawerForm()` and `useTable()` - all of which combine data fetching and UI presentation with **Ant Design** components - making data state management and UI rendering very compact and convenient.
+We have used some other higher level hooks as well, like `useModalForm()`, `useDrawerForm()` and `useTable()` - all of which combine data fetching and UI presentation with **Ant Design** components and give us compact and convenient hooks and components to work with.
 
 We covered `useTable()` on [Day 3](), and in this post we also use it to list `missions` and `invoices`. So, we will be inspecting some low level code to examine how `useTable()` implements data fetching and UI presentation under the hood. We are going to do the same for `useSelect()`. We also spend some time digging deep into the `<DeleteButton />` component in order to witness how it implements the `dataProvider.delete` method.
 
@@ -18,7 +18,7 @@ But before we move into writing code, we have to define the collections for `mis
 
 Let's revisit the ERD for our **Pdf Invoice Generator** app:
 
-![1-mission-invoice-pages-erd](./1-mission-invoice-pages-erd.png)
+![1-mission-invoice-pages-erd](https://imgbox.com/sC6NWQSC)
 
 We can see from the diagram that `users-permissions.user` should have an optional `has many` association with `missions` and `invoices` each. Also, `invoices` have an open `one-to-many` relation with `missions` with at least one mission mandatory for an invoice. On the other hand, `contacts` should have a `one-to-many` optional relation with `invoices`.
 
@@ -28,13 +28,13 @@ With this in mind, let's go ahead and create collections in our **Strapi** app.
 
 We should use the `Content-Type Builder` again to define these collections. The `missions` collection should look like this:
 
-![2-mission-invoice-pages-mission](./2-mission-invoice-pages-mission.png)
+![2-mission-invoice-pages-mission](https://imgbox.com/WxrAKtn3)
 
 ### Strapi `invoices` Collection
 
 The `invoices` collection should look as below:
 
-![3-mission-invoice-pages-invoices](./3-mission-invoice-pages-invoice.png)
+![3-mission-invoice-pages-invoices](https://imgbox.com/yylFuKEx)
 
 With the collections completed, we should now authorize `authenticated` users to perform CRUD operations on them.
 
@@ -44,7 +44,7 @@ Like we did before with the `companies`, `clients` and `contacts` collections, w
 
 We can do this from the following path in our **Strapi** app: `/admin/settings/users-permissions/roles/1`
 
-![4-mission-invoice-pages-auth](./4-mission-invoice-pages-auth.png)
+![4-mission-invoice-pages-auth](https://imgbox.com/gb6td5Dz)
 
 We need to set permissions for both `missions` and `invoices`.
 
@@ -52,7 +52,7 @@ With these done, now we can head back to our **refine** app and add resources an
 
 ## Adding `resources` and Routes for `missions` and `invoices`
 
-Back in our `App.tsx`, let's quickly add the resource objects and routes definitions:
+Back in our `App.tsx`, let's quickly add the resource objects and route definitions:
 
 ```TypeScript
 import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
@@ -321,7 +321,7 @@ export const MissionList: React.FC = () => {
 
 The `useTable()`and `useModalForm()` hooks are already familiar to us, as we have used them on [Day 3](). In short, **refine-Ant Design**'s `useTable()` hook produces for us a set of props inside `tableProps` which is tailored to match the props accepted by **Ant Design**'s `<Table />` component. Similarly, we are picking the `formProps` object exposed by `useModalForm()` hook to be passed to the `<Form />` component, and also the `modalProps` to match the props accepted by `<Modal />` component.
 
-Towards the end of this post, dig into some of these hooks' source code and try to make sense of how **refine** handles all these for us under the hood.
+Towards the end of this post, we dig into some of these hooks' source code and try to make sense of how **refine** handles all these for us under the hood.
 
 ### refine `create` View for `missions`
 
@@ -425,7 +425,7 @@ It's render is trigerred by a click on the `<EditButton />` placed inside a `<Ta
 
 Ok. With these views completed, we should be able to create, list and show `missions` records from our app.
 
-![5-mission-invoice-pages-list-missions](./5-mission-invoice-pages-list-missions.png)
+![5-mission-invoice-pages-list-missions](https://imgbox.com/KiBLpScZ)
 
 ## Adding Views for `invoices`
 
@@ -676,11 +676,11 @@ export const CreateInvoice: React.FC<IResourceComponentsProps> = () => {
 
 There are a couple of things important in the code above. First, the use of `<Create />` component, which consumes the `saveButtonProps` object extracted from the `useForm()` hook. And secondly, the use of the `useSelect()` hook. We'll come to `useSelect()` in the next section about `edit` view but notice that multiple `useSelect()` hooks are used to fetch data from the **Strapi** backend, before they can be added to different fields of the form to create a new `invoices` entry.
 
-**refine `create` Component**
+**refine `<Create />` Component**
 
 The `<Create />` component by default places a **refine-Ant Design** `<SaveButton />` component as its child and `saveButtonProps` are passed to it. `saveButtonProps` include props for the form action, button loading and disabling states. Here, when the `<SaveButton />` is clicked `formProps.onFinish()` is triggered, which eventually invokes the `dataProvider.create` method via `useCreate()`.
 
-For the details about how the `<SaveButton />` works, feel free to read through the [docs here]().
+For the details about how the `<SaveButton />` works, feel free to read through the [docs here](https://refine.dev/docs/api-reference/antd/components/buttons/save-button/).
 
 ### refine `edit` Views for `invoices`
 
@@ -792,11 +792,11 @@ This time, the `meta.populate` property includes multiple associated resources i
 
 **refine `useSelect()` Hook**
 
-We are using multiple `useSelect()` hooks that allow us fetch `companies`, `missions` and `contacts` data and avail them to `<Form.Item />`s. Under the hood, a `useSelect()` hook counts on the `useList()` data hook to access and invoke the `dataProvider.getList` method for fetching data from our **Strapi** backend. The argument object passed is, therefore, the same as that of `useList()`. For more details, please see [the `useSelect()` API reference here]().
+We are using multiple `useSelect()` hooks that allow us fetch `companies`, `missions` and `contacts` data and avail them to `<Form.Item />`s. Under the hood, a `useSelect()` hook counts on the `useList()` data hook to access and invoke the `dataProvider.getList` method for fetching data from our **Strapi** backend. The argument object passed is, therefore, the same as that of `useList()`. For more details, please see [the `useSelect()` API reference here](https://refine.dev/docs/api-reference/antd/hooks/field/useSelect/).
 
 With these components added, we should be able to create, list and edit invoices.
 
-![6-mission-invoice-pages-list-invoices](./6-mission-invoice-pages-list-invoices.png)
+![6-mission-invoice-pages-list-invoices](https://imgbox.com/McLJ3yv4)
 
 ## Low Level Inspection
 
@@ -876,7 +876,7 @@ const queryResult = useList<TData, TError>({
 });
 ```
 
-Then, among others inside the gigantic returned object, the `tableProps` property conforms to the props that are accepted by the [**Ant Design** `<Table />` component]():
+Then, among others inside the gigantic returned object, the `tableProps` property conforms to the props that are accepted by the [**Ant Design** `<Table />` component](https://ant.design/components/table#table):
 
 ```TypeScript
 return {
@@ -950,7 +950,7 @@ const queryResult = useList<TData, TError>({
 });
 ```
 
-The returned object is tailored to match [the props of the **Ant Design** `<Select />` component]():
+The returned object is tailored to match [the props of the **Ant Design** `<Select />` component](https://ant.design/components/select#select-props):
 
 ```TypeScript
 return {
@@ -1012,3 +1012,11 @@ return (
 As we can see from the above analysis, in the background, **refine** handles a lot of data heavy tasks, fine-tunes compatibility with popular stable UI components; and in the foreground, it keeps its hooks and elements highly customizable, compact and elegant.
 
 ## Summary
+
+In this post, we added CRUD pages for `missions` and `invoices` pages in our **Pdf Invoice Generator** app.
+
+We set off with creating **Strapi** collections for these resources and setting permissions for `authenticated` users to access them. We then added the resource objects and route definitions before we built the pages and their partial components.
+
+We discussed in significant depth how higher level hooks like `useTable()` and `useModalForm()` provide developer convenience by dealing with data fetching and processing behind the scenes. We then inspect the source code of a couple of these hooks and the `<DeleteButton />` to see how the heavy tasks are done.
+
+In the next episode, we add PDF renderer to our app. The PDF renderer will allow users to generate and voew a pdf document for an invoice.

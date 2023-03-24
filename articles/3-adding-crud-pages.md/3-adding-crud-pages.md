@@ -2,7 +2,7 @@
 
 In this post, we build on our existing understanding of `dataProvider` and `authProvider` props of `<Refine />` to implement CRUD operations in our **Pdf Invoice Genrator** app that we initialized in the previous post. While doing so, we discuss the roles of `<Refine />` component's `resources` and routing conventions as well.
 
-CRUD actions are supported by the **Strapi** data provider we chose for our project and in this post we use them to build pages for **Company**, **Client** and **Contact** resources. We implement appropriate pages and support components with `list`, `create`, `edit` and `delete` actions. We also add auth features we discussed on Day Two of the [**refineWeek**]() series.
+CRUD actions are supported by the **Strapi** data provider we chose for our project and in this post we use them to build pages for **Company**, **Client** and **Contact** resources. We implement appropriate pages and partial components with `list`, `create`, `edit` and `delete` actions. We also add auth features we discussed on Day Two of the [**refineWeek**]() series.
 
 We're on Day Three and this **refineWeek** is a five-part tutorial that aims to help developers learn the ins-and-outs of **refine**'s powerful capabilities and get going with **refine** within a week.
 
@@ -127,7 +127,7 @@ export default App;
 ### Strapi API Tokens
 In order for `dataProvider` and `authProvider` to work, we need to create an API token in the **Strapi** backend so that we can use it to access the API endpoints from our **refine** **Pdf Invoice Generator** app. We can create it from the `Settings >> API Tokens` page of the dashboard of the **Strapi** backend we are running at `http://localhost:1337`.
 
-Please follow [this section]() of the **Strapi** quickstart guide for more details on creating API Tokens.
+Please follow [this section](https://docs.strapi.io/user-docs/settings/managing-global-settings#creating-a-new-api-token) of the **Strapi** docs for more details on creating API Tokens.
 
 I have created mine. After creating the token, we have to place it inside `src/constants.ts` file. So, let's update it:
 
@@ -217,11 +217,11 @@ In versions `< v4`, `resources` items used to include view definitions (for exam
 
 However, view definitions are not used in `v4` `resources` items. Instead, as we will see below, **path definitions** are specified. Version `v4` allows flexible routing with `<Route />` components, and so view definitions for each `resources` item are now configured inside `<Route />` components.
 
-In the mean time, legacy resource defintions, data and auth providers are still functional in **refine** `v4`. If you want to use the legacy `resources` convention, you have to use the `legacyRouterProvider` prop instead of `routerProvider` and `legacyAuthProvider` prop instead of the `authProvider` prop of the `<Refine />` component. More on this [here]().
+In the mean time, legacy resource defintions, data and auth providers are still functional in **refine** `v4`. If you want to use the legacy `resources` convention, you have to use the `legacyRouterProvider` prop instead of `routerProvider` and `legacyAuthProvider` prop instead of the `authProvider` prop of the `<Refine />` component. More on this [here](https://refine.dev/docs/api-reference/core/providers/router-provider/#legacy-router-provider).
 
 In this app, we are using the new definitions introduced in `v4`.
 
-Keeping these points in mind, let's now implement CRUD operations for `companies`, `clients` and `contacts`. We'll first add the resource objects and route definitions, at once for all the three resources above. In the later sections, we'll consider the CRUD actions one by one for each resource with related pages and support components.
+Keeping these points in mind, let's now implement CRUD operations for `companies`, `clients` and `contacts`. We'll first add the resource objects and route definitions, at once for all the three resources above. In the later sections, we'll consider the CRUD actions one by one for each resource with related pages and partial components.
 
 ### Adding `resources` to `<Refine />`
 
@@ -439,7 +439,7 @@ function App() {
 export default App;
 ```
 
-In the following sections, we explore these pages one by one for each resource along with their support components and examine the hooks used to fetch and render data from the **Strapi** backend.
+In the following sections, we explore these pages one by one for each resource along with their partial components and examine the hooks used to fetch and render data from the **Strapi** backend.
 
 ## Adding Views for Companies
 For the `companies` resource, our app should have `list`, `create`, `edit` and `delete` actions. In the following sections, as we add the necessary components, we also discuss what `dataProvider` methods and data hooks we are using for these actions.
@@ -519,17 +519,27 @@ export const CompanyList: React.FC<IResourceComponentsProps> = () => {
 
 We are using the `useSimpleList()` data hook in the `<CompanyList />` component. It is a higher level hook built on top of the `useList()` hook that comes with the `@refinedev/antd` package. `useList()` is a low level **refine** core hook.
 
-`useSimpleList()` hook is being used to display our `companies` data in a list. More details about the `useSimpleList()` hook is available [here]().
+`useSimpleList()` hook is being used to display our `companies` data in a list. More details about the `useSimpleList()` hook is available [here](https://refine.dev/docs/api-reference/antd/hooks/list/useSimpleList/).
 
 Basically, the `useSimpleList()` hook gives us access to the `dataProvider.getList` method from inside the `<CompanyList />` component. We are grabbing the `listProps` object and passing it to the `<AntdList />`, which is an **Ant Design** component that displays the items.
 
-Detailed reference of the **Ant Design** `<List />` component (imported as `<AntdList />`) is available [here]().
+Detailed reference of the **Ant Design** `<List />` component (imported as `<AntdList />`) is available [here](https://ant.design/components/list#api).
 
 ### Company `create` Action
 
-Take a note of the `<List />` component in the `<CompanyList />` page. And especially the `createButtonProps` prop. `<List />` is an **refine-Ant Design** component that by default places a `<CreateButton />` inside a header. This button can be customized to have props for events such as `onClick`.
+Take a note of the `<List />` component in the `<CompanyList />` page. And especially the `createButtonProps` prop. `<List />` is an **refine-Ant Design** component that by default places a `<CreateButton />` inside its header. This button's `onClick` props can be customized by setting the `createButtonsProps` prop of `<List />`.
 
-For example, we are setting the behavior of the button to show the modal by invoking `createShow()` on a click. More elaboration about it is available in the [docs section here](https://refine.dev/docs/api-reference/antd/components/basic-views/list/#cancreate-and-createbuttonprops).
+For example, with the below object, we are setting the behavior of the button to show the modal by invoking `createShow()` on the click event:
+
+```TypeScript
+ createButtonProps={{
+    onClick: () => {
+        createShow();
+    },
+}}
+```
+
+More elaboration about it is available in the [docs section here](https://refine.dev/docs/api-reference/antd/components/basic-views/list/#cancreate-and-createbuttonprops).
 
 In the `<CompanyList />` page above, by specifying the value of `createButtonProps` prop for `<List />`, we are activating the `<CreateButton />`. And then we are invoking the `createShow` modal function for the `onClick` event on the button.
 
@@ -550,7 +560,7 @@ const {
 });
 ```
 
-We are picking `modalProps` and `formProps` and passing them to the `<CreateCompany />` modal. To get more comprehensive understanding, please feel free to go over the [`useModalForm()` API reference here]().
+We are picking `modalProps` and `formProps` and passing them to the `<CreateCompany />` modal. To get more comprehensive understanding, please feel free to go over the [`useModalForm()` API reference here](https://refine.dev/docs/api-reference/antd/hooks/form/useModalForm/).
 
 **refine-Ant Design `<Modal />` Component**
 
@@ -667,7 +677,7 @@ There are several things to emphasize around the modal here. First, the `modalPr
 
 **refine `<Form />` Component**
 
-The `formProps` are tailored according to and passed to the **Ant Design** `<Form />` component. If we look closer, the form `values` are passed to the `onFinish` event handler for send a `POST` request. More information on the `<Form />` component is available [here]().
+The `formProps` are tailored according to and passed to the **Ant Design** `<Form />` component. If we look closer, the form `values` are passed to the `onFinish` event handler for send a `POST` request. More information on the `<Form />` component is available [here](https://ant.design/components/form#form).
 
 ### Company `edit` and `delete` Actions
 
@@ -740,7 +750,7 @@ export const CompanyItem: React.FC<CompanyItemProps> = ({ item, editShow }) => {
 };
 ```
 
-In the above code, the [`<EditButton />`]() and [`<DeleteButton />`]() components are provided by the `@refinedev/antd` package.
+In the above code, the [`<EditButton />`](https://refine.dev/docs/api-reference/antd/components/buttons/edit-button/) and [`<DeleteButton />`](https://refine.dev/docs/api-reference/antd/components/buttons/delete-button/) components are provided by the `@refinedev/antd` package.
 
 The `<EditButton />` opens up the `<EditCompany />` modal when clicked. It uses a separate instance of the `useModalForm()` hook for forwarding editable data to the `edit` action inside `<EditCompany />`:
 
@@ -761,7 +771,7 @@ These are pretty much everything we need for the `list`, `create`, `edit` and `d
 
 At this point, let's run the **refine** server and the **Strapi** server at `http://localhost:1337`. And we should be presented with a login screen at `http://localhost:3000/login`:
 
-![1-adding-crud-pages](./1-adding-crud-pages.png)
+![1-adding-crud-pages](https://imgbox.com/TfbkwIX9)
 
 ### Email Authentication with Strapi in Refine
 
@@ -806,7 +816,7 @@ The routing and components involved are the following:
 
 The component being rendered at `/login` is the **refine-Ant Design** `<AuthPage />` component which is provided by the `@refinedev/antd` package. The `<AuthPage />` component is a special component that has variants for `login`, `register`, `forgotPassword` and `updatePassword`, which are generated based on the prop passed. For example in the code snippet above, we are asking for the `login` type of the `<AuthPage />` component at the `/login` route.
 
-More on the `<AuthPage />` component is available [here]().
+More on the `<AuthPage />` component is available [here]()https://refine.dev/docs/api-reference/antd/components/antd-auth-page/.
 
 ### Strapi Backend Authentication
 
@@ -819,13 +829,13 @@ password: demodemo
 
 As previously indicated on [Day Two](), we also have to set the role of this user to `authenticated`:
 
-![2-adding-crud-pages](./2-adding-crud-pages.png)
+![2-adding-crud-pages](https://imgbox.com/sbZALGGy)
 
 With these completed successfully, now if we attempt to log in to our **Pdf Invoice Generator** app, we should be redirected to the `/companies` route. And we should expect a blank page.
 
-Now if we go ahead create a few companies, they should be displayed in the page:
+When we create a few companies, they should be displayed in the page:
 
-![3-adding-crud-pages](./3-adding-crud-pages.png)
+![3-adding-crud-pages](https://imgbox.com/rQ41EY9C)
 
 We can go about editing company details from a modal and also delete a company.
 
@@ -835,7 +845,7 @@ The app redirects to `/companies`, because **refine** sets the root route to be 
 
 Now it's time to turn our attention back to CRUD actions. Let's implement views for the `clients` resource.
 
-We already completed the `resource` object and route definitions for `clients` previously. We now need to introduce the page and support components.
+We already completed the `resource` object and route definitions for `clients` previously. We now need to introduce the page and partial components.
 
 ### `list` View for `clients`
 
@@ -1040,9 +1050,9 @@ export const CreateClient: React.FC<CreateClientProps> = ({
 
 The `formProps` is tailored to match the props of the **Ant Design** `<Form />` component and by specifying `action: "create"`, we are sending a `POST` request to `/clients` endpoint in our **Strapi** app.
 
-Please feel free to explore the [`useDrawerForm()` documentation]() for more details.
+Please feel free to explore the [`useDrawerForm()` documentation](https://refine.dev/docs/api-reference/antd/hooks/form/useDrawerForm/) for more details.
 
-The `edit` action for `clients`, similar to the `create` action, also leverages `useDrawerForm()` hook to manage operations and fetch data for the `<EditClient />` component, which is also built on the `<Drawer />` component. Please refer to [**Ant Design** documentation for `<Drawer />`]() for further examination.
+The `edit` action for `clients`, similar to the `create` action, also leverages `useDrawerForm()` hook to manage operations and fetch data for the `<EditClient />` component, which is also built on the `<Drawer />` component. Please refer to [**Ant Design** documentation for `<Drawer />`](https://ant.design/components/drawer) for further examination.
 
 ### `delete` Action for `clients`
 
@@ -1150,7 +1160,7 @@ We are invoking `useDelete()` hook and picking the `mutate()` function for delet
 
 With these views completed, now we should be able to create, list, update and delete `clients` records from within our **refine** app.
 
-![4-adding-crud-pages](./4-adding-crud-pages.png)
+![4-adding-crud-pages](https://imgbox.com/k3aaH0qE)
 
 ## Adding Views for `contacts`
 
@@ -1356,7 +1366,7 @@ export const CreateContact: React.FC<CreateContactProps> = ({
 };
 ```
 
-Again, the `<CreateContact />` component is derived from a `<Modal />` which is fed the `modalProps` and `formProps` received from `useModalForm()` hook invoked inside `<ContactList />`. This should be familiar from [the `list` views section above.]()
+Again, the `<CreateContact />` component is derived from a `<Modal />` which is fed the `modalProps` and `formProps` received from `useModalForm()` hook invoked inside `<ContactList />`. This should look familiar from [the `list` views for companies section above](#list-view-for-companies).
 
 
 ### `edit` Action for `contacts`
@@ -1446,4 +1456,4 @@ We leveraged some high level hooks such as `useSimpleList`, `useModalForm()` and
 
 We also implemented authentication and authorization on the **Strapi** backend side for a user we created on the **Strapi** app and the **refine-Ant Design** `<AuthPage />` component.
 
-In the next, episode we will cover the views for two other resources: `missions` and `invoices`.
+In the next episode, we cover the views for two other resources: `missions` and `invoices`.

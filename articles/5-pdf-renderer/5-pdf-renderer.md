@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-ALl the stuff going on here is React-PDF stuff so we won't be delving into any of the components here. However, if you are interested in exploring what's happening, please feel free to check out the cool [`@react-pdf/renderer` docs here]().
+ALl the stuff going on here is React-PDF stuff so we won't be delving into any of the components here. However, if you are interested in exploring what's happening, please feel free to check out the cool [`@react-pdf/renderer` docs here](https://react-pdf.org/components).
 
 
 ### Displaying PDF Renderer in refine Modal
@@ -499,7 +499,7 @@ Do take note of the `meta.populate` property of the `useTable()` hook's argument
 
 OK. With this done, we can now go ahead and test our app and should be able to view the pdf document by clicking on the pdf document icon.
 
-![1-pdf-renderer](./1-pdf-renderer.png)
+![1-pdf-renderer](https://imgbox.com/vieftaXx)
 
 ## Series Wrap Up
 
