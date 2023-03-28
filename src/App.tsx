@@ -4,19 +4,12 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import {
   AuthPage,
   ErrorComponent,
-  Layout,
+  ThemedLayout,
   notificationProvider,
+  ThemedTitle,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 import * as Icons from "@ant-design/icons";
-
-const {
-  UserAddOutlined,
-  TeamOutlined,
-  InfoCircleOutlined,
-  SlidersOutlined,
-  FileAddOutlined,
-} = Icons;
 
 import routerBindings, {
   CatchAllNavigate,
@@ -34,6 +27,14 @@ import { ClientList } from "pages/clients";
 import { ContactList, EditContact } from "pages/contacts";
 import { MissionList } from "pages/missions";
 import { CreateInvoice, EditInvoice, InvoiceList } from "pages/invoices";
+
+const {
+  UserAddOutlined,
+  TeamOutlined,
+  InfoCircleOutlined,
+  SlidersOutlined,
+  FileAddOutlined,
+} = Icons;
 
 function App() {
   return (
@@ -63,14 +64,14 @@ function App() {
                 name: "missions",
                 list: "/missions",
                 icon: <SlidersOutlined />,
-            },
-            {
+              },
+              {
                 name: "invoices",
                 list: "/invoices",
                 create: "/invoices/create",
                 edit: "invoices/:id/edit",
                 icon: <FileAddOutlined />,
-            },
+              },
             ]}
             authProvider={authProvider}
             dataProvider={DataProvider(API_URL + `/api`, axiosInstance)}
@@ -85,9 +86,17 @@ function App() {
               <Route
                 element={
                   <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                    <Layout Header={Header}>
+                    <ThemedLayout
+                      Header={Header}
+                      Title={({ collapsed }) => (
+                        <ThemedTitle
+                          collapsed={collapsed}
+                          text="refine Invoice"
+                        />
+                      )}
+                    >
                       <Outlet />
-                    </Layout>
+                    </ThemedLayout>
                   </Authenticated>
                 }
               >
@@ -139,9 +148,17 @@ function App() {
               <Route
                 element={
                   <Authenticated>
-                    <Layout Header={Header}>
+                    <ThemedLayout
+                      Header={Header}
+                      Title={({ collapsed }) => (
+                        <ThemedTitle
+                          collapsed={collapsed}
+                          text="refine Invoice"
+                        />
+                      )}
+                    >
                       <Outlet />
-                    </Layout>
+                    </ThemedLayout>
                   </Authenticated>
                 }
               >
